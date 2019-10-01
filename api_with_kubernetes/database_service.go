@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -23,8 +24,8 @@ type UserInfo struct {
 }
 
 type DatabaseService interface {
-	Save(UserInfo)
-	Retrieve(int) UserInfo
+	Save(*UserInfo)
+	Retrieve(int) (*UserInfo, error)
 }
 
 type DatabaseServiceImpl struct {
@@ -45,11 +46,16 @@ func NewDatabaseServiceImp(host string, port int, dbname string, collection_name
 	return &DatabaseServiceImpl{client: client, collection: collection}
 }
 
-func (m *DatabaseServiceImpl) Save(user_info *UserInfo) {
+func (m *DatabaseServiceImpl) Save(user_info *UserInfo) error {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	insertResult, err := m.collection.InsertOne(ctx, user_info)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 	fmt.Println("Inserted document : ", insertResult.InsertedID)
+	return nil
+}
+
+func (m *DatabaseServiceImpl) Retrieve(id int) (*UserInfo, error) {
+	return nil, errors.New("Not implemented")
 }
