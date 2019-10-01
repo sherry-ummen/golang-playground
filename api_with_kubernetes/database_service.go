@@ -16,6 +16,12 @@ const (
 	COLLECTIONNAME = "user_info"
 )
 
+type UserInfo struct {
+	UserName   string
+	Age        int
+	EmployeeId int
+}
+
 type DatabaseService interface {
 	Save(UserInfo)
 	Retrieve(int) UserInfo
@@ -26,7 +32,7 @@ type DatabaseServiceImpl struct {
 	collection *mongo.Collection
 }
 
-func (d *DatabaseServiceImpl) NewDatabaseServiceImp(host string, port int, dbname string, collection_name string) {
+func NewDatabaseServiceImp(host string, port int, dbname string, collection_name string) *DatabaseServiceImpl {
 	client, err := mongo.NewClient(options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%d", host, port)))
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
@@ -34,9 +40,16 @@ func (d *DatabaseServiceImpl) NewDatabaseServiceImp(host string, port int, dbnam
 	if err != nil {
 		fmt.Println("Error : " + err.Error())
 	}
-	d.collection = client.Database(dbname).Collection(collection_name)
+
+	collection := client.Database(dbname).Collection(collection_name)
+	return &DatabaseServiceImpl{client: client, collection: collection}
 }
 
-func (m DatabaseServiceImpl) Save(user_info UserInfo) {
-
+func (m *DatabaseServiceImpl) Save(user_info *UserInfo) {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	insertResult, err := m.collection.InsertOne(ctx, user_info)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("Inserted document : ", insertResult.InsertedID)
 }
