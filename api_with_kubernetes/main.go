@@ -22,7 +22,7 @@ func main() {
 		}
 		var userinfo *UserInfo
 		if userinfo, err = dbService.Retrieve(idasint); err != nil {
-			context.JSON(http.StatusInternalServerError, gin.H{"status": "Internal error" + err.Error()})
+			context.JSON(http.StatusInternalServerError, gin.H{"status": "Internal error " + err.Error()})
 			return
 		}
 		context.JSON(http.StatusOK, gin.H{"status": "ok", "user": userinfo})
@@ -33,7 +33,7 @@ func main() {
 
 		if context.Bind(&user) == nil {
 			if err := dbService.Save(&user); err != nil {
-				context.JSON(http.StatusInternalServerError, gin.H{"status": "Internal Server Error" + err.Error()})
+				context.JSON(http.StatusInternalServerError, gin.H{"status": "Internal Server Error " + err.Error()})
 				return
 			}
 		}

@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -47,8 +47,7 @@ func NewDatabaseServiceImp(host string, port int, dbname string, collection_name
 }
 
 func (m *DatabaseServiceImpl) Save(user_info *UserInfo) error {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	insertResult, err := m.collection.InsertOne(ctx, user_info)
+	insertResult, err := m.collection.InsertOne(context.TODO(), user_info)
 	if err != nil {
 		return err
 	}
@@ -57,5 +56,10 @@ func (m *DatabaseServiceImpl) Save(user_info *UserInfo) error {
 }
 
 func (m *DatabaseServiceImpl) Retrieve(id int) (*UserInfo, error) {
-	return nil, errors.New("Not implemented")
+	var userInfo UserInfo
+	err := m.collection.FindOne(context.TODO(), bson.M{"employeeid": id}).Decode(&userInfo)
+	if err != nil {
+		return nil, err
+	}
+	return &userInfo, nil
 }
