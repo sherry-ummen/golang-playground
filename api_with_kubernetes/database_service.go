@@ -11,10 +11,12 @@ import (
 )
 
 const (
-	HOST           = "localhost"
-	PORT           = 27017
+	HOST           = "mongodb"
+	PORT           = 27018
 	DBNAME         = "service_db"
 	COLLECTIONNAME = "user_info"
+	ROOTUSER       = "mongousradmin"
+	ROOTPASSWORD   = "mongopassadmin"
 )
 
 type UserInfo struct {
@@ -33,8 +35,8 @@ type DatabaseServiceImpl struct {
 	collection *mongo.Collection
 }
 
-func NewDatabaseServiceImp(host string, port int, dbname string, collection_name string) *DatabaseServiceImpl {
-	client, err := mongo.NewClient(options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%d", host, port)))
+func NewDatabaseServiceImp(username string, password string, host string, port int, dbname string, collection_name string) *DatabaseServiceImpl {
+	client, err := mongo.NewClient(options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%s@%s:%d/admin", username, password, host, port)))
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	err = client.Connect(ctx)

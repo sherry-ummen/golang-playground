@@ -1,4 +1,4 @@
-module github.com/api_with_kubernetes_example
+module github.com/api_with_kubernetes
 
 go 1.13
 

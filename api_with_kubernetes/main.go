@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	dbService := NewDatabaseServiceImp(HOST, PORT, DBNAME, COLLECTIONNAME)
+	dbService := NewDatabaseServiceImp(ROOTUSER, ROOTPASSWORD, HOST, PORT, DBNAME, COLLECTIONNAME)
 
 	r := gin.Default()
 
