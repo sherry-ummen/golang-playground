@@ -1,9 +1,8 @@
 version: '3.1'
 
-services:
-  
-  apiWithKubernetesMongodb:
-    container_name: apiWithKubernetesMongodb
+services:  
+  apiwithkubernetesmongodb:
+    container_name: apiwithkubernetesmongodb
     image: mongo
     ports:
       - "27018:27018"
@@ -21,22 +20,19 @@ services:
   apiWithKubernetes: 
     container_name: api_with_kubernetes
     image: sherryummen/api_with_kubernetes:v1
-    hostname: api_with_kubernetes_mongodb
     build: 
       context: .
       dockerfile: Dockerfile
     networks:
-    - apinet
+      - apinet
     volumes:
-    - .:/go/src/api_with_kubernetes
+      - .:/go/src/api_with_kubernetes
     ports:
-    - 8080:8080
+      - 8080:8080
     depends_on:
-    - apiWithKubernetesMongodb
+      - apiwithkubernetesmongodb
     links:
-    - apiWithKubernetesMongodb
-    labels:
-      kompose.service.type: LoadBalancer
+      - apiwithkubernetesmongodb
 
 networks:
   apinet:

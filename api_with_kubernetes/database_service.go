@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	HOST           = "mongodb"
+	HOST           = "apiwithkubernetesmongodb"
 	PORT           = 27018
 	DBNAME         = "service_db"
 	COLLECTIONNAME = "user_info"
@@ -43,7 +43,6 @@ func NewDatabaseServiceImp(username string, password string, host string, port i
 	if err != nil {
 		fmt.Println("Error : " + err.Error())
 	}
-
 	collection := client.Database(dbname).Collection(collection_name)
 	return &DatabaseServiceImpl{client: client, collection: collection}
 }
