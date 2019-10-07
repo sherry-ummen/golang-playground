@@ -17,7 +17,7 @@ services:
     networks:
       - apinet
 
-  apiWithKubernetes: 
+  apiwithkubernetes: 
     container_name: api_with_kubernetes
     image: sherryummen/api_with_kubernetes:v1
     build: 

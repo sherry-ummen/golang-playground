@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.17.0 (a74acad)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: apiwithkubernetesmongodb
+  name: apiwithkubernetesmongodb
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: apiwithkubernetesmongodb
+    spec:
+      containers:
+      - args:
+        - --bind_ip_all
+        - --port
+        - "27018"
+        env:
+        - name: MONGO_INITDB_DATABASE
+          value: admin
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: mongopassadmin
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: mongousradmin
+        image: mongo
+        name: apiwithkubernetesmongodb
+        ports:
+        - containerPort: 27018
+        resources: {}
+      hostname: mongodb
+      restartPolicy: Always
+status: {}

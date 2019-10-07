@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.17.0 (a74acad)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: apiwithkubernetes
+  name: apiwithkubernetes
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: apiwithkubernetes
+    spec:
+      containers:
+      - image: sherryummen/api_with_kubernetes:v1
+        name: api_with_kubernetes
+        ports:
+        - containerPort: 8080
+        resources: {}
+        volumeMounts:
+        - mountPath: /go/src/api_with_kubernetes
+          name: apiwithkubernetes-claim0
+      restartPolicy: Always
+      volumes:
+      - name: apiwithkubernetes-claim0
+        persistentVolumeClaim:
+          claimName: apiwithkubernetes-claim0
+status: {}
